@@ -1,27 +1,175 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<style type="text/css"> 
-			body {margin: 30px;} 
-		</style>  
-		<meta charset=utf-8 /> 
-		<title>Remove items from a dropdown list</title>
-	</head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remove Color from Dropdown</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        #colorSelect {
+            width: 200px;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: white;
+        }
+        
+        #colorSelect:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+        
+        input[type="button"] {
+            padding: 10px 20px;
+            margin-left: 10px;
+            background-color: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        input[type="button"]:hover {
+            background-color: #cc3333;
+        }
+        
+        .preview {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .preview h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        
+        .color-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .color-item {
+            padding: 5px 10px;
+            background-color: #e0e0e0;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Remove Color from Dropdown List</h1>
+        
+        <div class="form-group">
+            <label for="colorSelect">Select a color to remove:</label>
+            <select id="colorSelect">
+                <option value="Red">Red</option>
+                <option value="Green">Green</option>
+                <option value="White">White</option>
+                <option value="Black">Black</option>
+                <option value="Blue">Blue</option>
+                <option value="Yellow">Yellow</option>
+                <option value="Purple">Purple</option>
+                <option value="Orange">Orange</option>
+            </select>
+            <input type="button" value="Select and Remove" onclick="removeSelectedColor()">
+        </div>
+        
+        <div class="preview">
+            <h3>Current Colors in List:</h3>
+            <div id="colorList" class="color-list"></div>
+        </div>
+    </div>
 
-	<body>
-		<form> 
-			<select id="colorSelect"> 
-				<option>Red</option> 
-				<option>Green</option> 
-				<option>White</option> 
-				<option>Black</option> 
-			</select> 
-			<input type="button" value="Select and Remove"> 
-		</form>
-
-		<script type="text/javascript" src="./script.js">
-		</script>
-
-	</body>
-
+    <script>
+        // Function to remove the selected color from the dropdown
+        function removeSelectedColor() {
+            const colorSelect = document.getElementById('colorSelect');
+            const selectedIndex = colorSelect.selectedIndex;
+            
+            // Check if a valid option is selected
+            if (selectedIndex >= 0) {
+                // Remove the selected option
+                colorSelect.remove(selectedIndex);
+                
+                // Update the preview
+                updateColorPreview();
+                
+                // If no options left, show a message
+                if (colorSelect.options.length === 0) {
+                    colorSelect.innerHTML = '<option disabled>No colors available</option>';
+                }
+            }
+        }
+        
+        // Function to update the color preview
+        function updateColorPreview() {
+            const colorSelect = document.getElementById('colorSelect');
+            const colorList = document.getElementById('colorList');
+            
+            // Clear the current preview
+            colorList.innerHTML = '';
+            
+            // Add each color to the preview
+            for (let i = 0; i < colorSelect.options.length; i++) {
+                const option = colorSelect.options[i];
+                if (!option.disabled) {
+                    const colorItem = document.createElement('div');
+                    colorItem.className = 'color-item';
+                    colorItem.textContent = option.text;
+                    colorList.appendChild(colorItem);
+                }
+            }
+            
+            // Show message if no colors available
+            if (colorSelect.options.length === 0 || (colorSelect.options.length === 1 && colorSelect.options[0].disabled)) {
+                colorList.innerHTML = '<div class="color-item" style="background-color: #ffcccb;">No colors available</div>';
+            }
+        }
+        
+        // Initialize the preview when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            updateColorPreview();
+        });
+    </script>
+</body>
 </html>
